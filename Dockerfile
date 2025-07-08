@@ -5,7 +5,7 @@ FROM nginx:alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy build files into nginx public directory
-COPY build/ /usr/share/nginx/html/
+COPY . /usr/share/nginx/html/
 
 # Expose port
 EXPOSE 80
