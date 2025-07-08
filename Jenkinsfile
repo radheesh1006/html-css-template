@@ -2,42 +2,25 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repo') {
+        stage('Clone Repository') {
             steps {
-                git 'https://github.com/radheesh1006/html-css-template.git'
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                bat 'npm install'
-            }
-        }
-
-        stage('Build React App') {
-            steps {
-                bat 'npm run build'
+                git url: 'https://github.com/radheesh1006/html-css-template.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t myapp-image .'
-            }
-        }
-
-        stage('Stop & Remove Old Container') {
-            steps {
-                bat '''
-                docker stop myapp-container || echo "No container running"
-                docker rm myapp-container || echo "No container to remove"
-                '''
+                bat 'docker build -t html-template-image .'
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                bat 'docker run -d -p 80:80 --name myapp-container myapp-image'
+                bat '''
+                docker stop html-template-container || echo "No container to stop"
+                docker rm html-template-container || echo "No container to remove"
+                docker run -d -p 80:80 --name html-template-container html-template-image
+                '''
             }
         }
     }
